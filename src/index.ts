@@ -4,6 +4,7 @@ import cors from 'cors';
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
+import taskRoutes from './routes/tasks.js';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 //Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/tasks', taskRoutes);
 
 //connect to MongoDB
 mongoose.connect(MONGO_URI)
