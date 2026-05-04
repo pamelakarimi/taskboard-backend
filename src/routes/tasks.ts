@@ -34,20 +34,22 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   }
 });
 
-// 3. UPDATE task status or priority
-router.patch('/:id', authenticate, async (req: AuthRequest, res: Response) => {
+// 3. UPDATE task completely
+router.patch('/:id', async (req, res) => {
   try {
-    const { status, priority } = req.body;
-    const task = await Task.findOneAndUpdate(
-      { _id: req.params.id, userId: req.userId }, 
-      { status, priority },
-      { new: true }
-    );
+    const { id } = req.params;
+    const updates = req.body;
 
-    if (!task) return res.status(404).json({ message: "Task not found" });
-    res.json(task);
+    // { new: true } returns the updated document instead of the old one
+    const updatedTask = await Task.findByIdAndUpdate(id, updates, { new: true });
+
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    res.json(updatedTask);
   } catch (error) {
-    res.status(500).json({ message: "Update failed", error });
+    res.status(400).json({ message: "Error updating task", error});
   }
 });
 
