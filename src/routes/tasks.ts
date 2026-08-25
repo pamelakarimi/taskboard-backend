@@ -5,7 +5,7 @@ import Task from '../models/task.js';
 
 const router = express.Router();
 
-// 1. CREATE a new task
+//  CREATE a new task
 router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const { title, description, priority } = req.body;
@@ -24,7 +24,7 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
   }
 });
 
-// 2. GET all tasks for the logged-in user
+// GET all tasks for the logged-in user
 router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const tasks = await Task.find({ userId: req.userId }).sort({ createdAt: -1 });
@@ -34,7 +34,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   }
 });
 
-// 3. UPDATE task completely
+// UPDATE task completely
 router.patch('/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,7 +53,7 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
-// 4. DELETE a task
+//  DELETE a task
 router.delete('/:id', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const task = await Task.findOneAndDelete({ _id: req.params.id, userId: req.userId });
